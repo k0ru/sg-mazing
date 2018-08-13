@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const queryParser = require('query-string');
 
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.post('/complete', function (req, res) {
     let event = req;
@@ -29,8 +29,8 @@ app.post('/complete', function (req, res) {
                 res.send(`this is the body: ${body}`);
             }
         } else if (typeof event.body === 'object' && !Array.isArray(event.body)) {
-            // body = JSON.stringify(event.body);
-            res.send("body is object")
+            body = JSON.stringify(event.body); // body is blank from SG
+            res.send(`this is the body: ${body}`)
         } else {
             res.send("body be blank")
         }
