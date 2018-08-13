@@ -3,27 +3,22 @@ const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
 const queryParser = require('query-string');
-// 
-// const hook = {
-//     handler:
-// }
-
 
 app.use(express.json());
 
 // app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/complete', function (req, res) {
-
-
+    // body was empty
+    let response = JSON.stringify(req.body);
     res.send(`You sent ${response} to Express`);
 })
-
-isJsonString: str =>
-    (typeof str === 'string' &&
-    str.trim().slice(0, 1) === '{' &&
-    str.trim().slice(-1) === '}'),
-
+//
+// isJsonString: str =>
+//     (typeof str === 'string' &&
+//     str.trim().slice(0, 1) === '{' &&
+//     str.trim().slice(-1) === '}'),
+//
 parseBody: event => {
     let body;
 
