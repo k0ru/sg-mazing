@@ -7,7 +7,7 @@ provider:
   region: us-east-1
 
 functions:
-  post:
+  webhook:
     handler: index.handler
     events:
       - http:
