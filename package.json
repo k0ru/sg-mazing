@@ -9,7 +9,9 @@
     "query-string": "^6.1.0",
     "serverless-http": "^1.6.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "aws-sdk": "^2.291.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
