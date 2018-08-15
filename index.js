@@ -24,31 +24,27 @@ function parseBody(req, res){
     let body;
     if ('body' in event) {
         if (typeof event.body === 'string') {
-            if (typeof event.body === 'string' &&
-                isJsonString(event.body)) {
-                  try {
-                    body = JSON.parse(event.body);
-                    res.send("Body has been parsed to JSON object")
-                  } catch (err) {
-                    res.send(`There was an error: ${err}`)
-                  }
+            if (isJsonString(event.body)) {
+              try {
+                body = JSON.parse(event.body);
+              } catch (err) {
+                  throw err;
+              }
             } else if (/=|\&/g.test(event.body)) {
-                res.send("This is a regular expression") // queryParser
+                body = queryParser.parse(event.body);
             } else {
                 body = event.body;
-                res.send(`this is the string it is: ${body}`);
             }
         } else if (typeof event.body === 'object' && !Array.isArray(event.body)) {
-            // do nothing
             let response = JSON.stringify(event.body);
-            // res.send(`this is the body: ${response}`)
             console.log("this is the response: ", response);
-            parseParameters(event.body);
+            body = event.body;
         } else {
-            res.send("body is blank")
+            body = {};
         }
     } else {
-        res.send("body is not in event")
+        console.log("Received an event with no body", event)
+        body = event;
     }
     return body;
 }
