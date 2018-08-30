@@ -12,8 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/complete', function (req, res) {
     const body = parseBody(req, res);
     const params = parseParameters(body);
-    awsLib.saveToDB(params);
-    res.send("Success!")
+    awsLib.saveToDB(params, res);
 });
 
 function isJsonString(str){
@@ -23,8 +22,8 @@ function isJsonString(str){
 }
 
 // The below type checks are adopted from the current implementation in sg-hooks.
-// While I believe we should only ever receive strings from SG-hooks, I kept
-// the same type checks as sg-hooks just in case.
+// While I believe we should only ever receive the request as an object from SG-hooks,
+// I kept the same type checks as sg-hooks just in case.
 function parseBody(req, res){
     let event = req;
     let body;
@@ -34,10 +33,10 @@ function parseBody(req, res){
               try {
                 body = JSON.parse(event.body);
               } catch (err) {
+                  const errMsg = `There was an error parsing string as JSON: ${err}`;
+                  res.send(errMsg);
                   throw err;
               }
-            } else if (/=|\&/g.test(event.body)) {
-                body = queryParser.parse(event.body);
             } else {
                 body = event.body;
             }
@@ -48,11 +47,17 @@ function parseBody(req, res){
             body = {};
         }
     } else {
-        body = event;
+        let noBodyMsg = "No event body given!"
+        console.log(noBodyMsg);
+        res.send(noBodyMsg);
     }
     return body;
 }
 
+// you'll have to manually update these values when you change what questions are asked,
+// as well as the fields accepted for the DynamoDB.
+// Another option is to build a dumb iterator that makes the key the question number
+// and the value the value of each property contained in the body
 function parseParameters(body){
     const params = {
         userID: body && body.userID,
@@ -62,6 +67,5 @@ function parseParameters(body){
     };
     return params;
 }
-
 
 module.exports.handler = serverless(app);

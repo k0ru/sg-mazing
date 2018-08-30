@@ -8,8 +8,7 @@ AWS.config.update({
 })
 
 const service = {
-    saveToDB: (params) => {
-        console.log('here are the params', params);
+    saveToDB: (params, res) => {
         dynamoParams = {
             Item: {
                 "userID": {
@@ -30,9 +29,11 @@ const service = {
         };
         dynamodb.putItem(dynamoParams, function(err, data){
             if(err) {
-                console.log(err)
+                console.log(err);
+                res.send("Failed to upload to database");
             } else {
-                console.log("Sucessfully uploaded data", data)
+                console.log("Sucessfully uploaded data", data);
+                res.send("Success!");
             }
         })
     }
