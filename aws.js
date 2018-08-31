@@ -9,23 +9,29 @@ AWS.config.update({
 
 const service = {
     saveToDB: (params, res) => {
+        // here's a reference for how to update the column names once questions
+        // are finalized:
+        // https://stackoverflow.com/questions/37817879/how-to-rename-dynamodb-column-key
         dynamoParams = {
             Item: {
-                "userID": {
-                    S: params.userID
+                "years": {
+                    S: params.years
+                },
+                "skills": {
+                    S: params.skills
+                },
+                "grades": {
+                    S: params.grades
+                },
+                "college_major": {
+                    S: params.college_major
                 },
                 "email": {
                     S: params.email
                 },
-                "q1": {
-                    S: params.q1
-                },
-                "q2": {
-                    S: params.q2
-                }
             },
             ReturnConsumedCapacity: "TOTAL",
-            TableName: 'forge-sg-survey-results-TEST'
+            TableName: 'forge-survey-results-TEST2'
         };
         dynamodb.putItem(dynamoParams, function(err, data){
             if(err) {

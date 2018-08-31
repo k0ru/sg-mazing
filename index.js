@@ -56,15 +56,15 @@ function parseBody(req, res){
 
 // you'll have to manually update these values when you change what questions are asked,
 // as well as the fields accepted for the DynamoDB.
-// Another option is to build a dumb iterator that makes the key the question number
-// and the value the value of each property contained in the body
 function parseParameters(body){
     const params = {
-        userID: body && body.userID,
-        email: body && body.email,
-        q1: body && body.grades,
-        q2: body && body.college_major
+        years: body && body.years,
+        skills: body && body.skills,
+        grades: body && body.grades,
+        college_major: body && body.college_major,
+        email: body && body.email
     };
+    console.log("here are params", params)
     return params;
 }
 
