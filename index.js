@@ -58,11 +58,18 @@ function parseBody(req, res){
 // as well as the fields accepted for the DynamoDB.
 function parseParameters(body){
     const params = {
-        years: body && body.years,
-        skills: body && body.skills,
         grades: body && body.grades,
         college_major: body && body.college_major,
-        email: body && body.email
+        email: body && body.email,
+        name: body && body.name,
+        involvement: body && body.involvement,
+        improvement: body && body.improvement,
+        missing_goals: body && body.missing_goals,
+        koru7: body && body.koru7,
+        prior_industry: body && body.prior_industry,
+        prior_role: body && body.prior_role,
+        extracurricular: body && body.extracurricular,
+        college_rank: body && body.college_rank
     };
     console.log("here are params", params)
     return params;

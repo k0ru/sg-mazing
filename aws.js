@@ -14,12 +14,6 @@ const service = {
         // https://stackoverflow.com/questions/37817879/how-to-rename-dynamodb-column-key
         dynamoParams = {
             Item: {
-                "years": {
-                    S: params.years
-                },
-                "skills": {
-                    S: params.skills
-                },
                 "grades": {
                     S: params.grades
                 },
@@ -29,6 +23,33 @@ const service = {
                 "email": {
                     S: params.email
                 },
+                "name": {
+                    S: params.name
+                },
+                "involvement": {
+                    S: params.involvement
+                },
+                "improvement": {
+                    S: params.improvement
+                },
+                "missing_goals": {
+                    S: params.missing_goals
+                },
+                "koru7": {
+                    S: params.koru7
+                },
+                "prior_industry": {
+                    S: params.prior_industry
+                },
+                "prior_role": {
+                    S: params.prior_role
+                },
+                "extracurricular": {
+                    S: params.extracurricular
+                },
+                "college_rank": {
+                    S: params.college_rank
+                }
             },
             ReturnConsumedCapacity: "TOTAL",
             TableName: 'forge-survey-results-TEST2'
