@@ -27,10 +27,10 @@ const service = {
                     S: params.name
                 },
                 "involvement": {
-                    NS: params.involvement
+                    S: params.involvement
                 },
                 "improvement": {
-                    S: params.improvement
+                    NS: params.improvement
                 },
                 "missing_goals": {
                     S: params.missing_goals
