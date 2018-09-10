@@ -6,6 +6,21 @@ const serverless = require('serverless-http');
 const app = express();
 const awsLib = require('./aws');
 
+const idMap = {
+    "email": 7,
+    "grades": 166,
+    "majors": 167,
+    "name": 227,
+    "involvement": 228,
+    "improvement": 229,
+    "missing_goals": 230,
+    "koru7": 231,
+    "prior_industry": 233,
+    "prior_role": 234,
+    "extracurricular":235,
+    "college_rank": 236
+};
+
 // for parsing application/x-www-form-urlencoded data
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -42,7 +57,7 @@ function parseBody(req, res){
             }
         } else if (typeof event.body === 'object' && !Array.isArray(event.body)) {
             let response = JSON.stringify(event.body);
-            body = event.body;
+            body = JSON.parse(event.body.response);
         } else {
             body = {};
         }
@@ -54,24 +69,40 @@ function parseBody(req, res){
     return body;
 }
 
+// This function just maps the rank to the option choice for scoring
+function parseRanking(params) {
+    let newMap = {};
+    let answers = params.answer;
+
+    for (answer in answers) {
+        let newKey = answers[answer].option;
+        newMap[newKey] = answers[answer].rank;
+    }
+    return newMap;
+}
+
 // you'll have to manually update these values when you change what questions are asked,
 // as well as the fields accepted for the DynamoDB.
 function parseParameters(body){
+    body = body.survey_data;
+    let improvement = parseRanking(body[idMap.improvement]);
+    let koru7 = parseRanking(body[idMap.koru7]);
+
     const params = {
-        grades: body && body.grades,
-        college_major: body && body.college_major,
-        email: body && body.email,
-        name: body && body.name,
-        involvement: body && body.involvement,
-        improvement: body && body.improvement,
-        missing_goals: body && body.missing_goals,
-        koru7: body && body.koru7,
-        prior_industry: body && body.prior_industry,
-        prior_role: body && body.prior_role,
-        extracurricular: body && body.extracurricular,
-        college_rank: body && body.college_rank
+        grades: body && body[idMap.grades].answer,
+        college_major: body && body[idMap.majors].answer,
+        email: body && body[idMap.email].answer,
+        name: body && body[idMap.name].answer,
+        involvement: body && body[idMap.involvement].answer,
+        improvement: body && improvement,
+        missing_goals: body && body[idMap.missing_goals].answer,
+        koru7: body && koru7,
+        prior_industry: body && body[idMap.prior_industry].answer,
+        prior_role: body && body[idMap.prior_role].answer,
+        extracurricular: body && body[idMap.extracurricular].answer,
+        college_rank: body && body[idMap.college_rank].answer
     };
-    console.log("here are params", params)
+    console.log("params ", params);
     return params;
 }
 

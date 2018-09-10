@@ -1,6 +1,8 @@
 const AWS = require('aws-sdk');
+const attr = require('dynamodb-data-types').AttributeValue;
 
 const dynamodb = new AWS.DynamoDB();
+//ykjvlmfz3g.execute-api.us-east-1.amazonaws.com/dev/complete
 
 AWS.config.update({
     region: 'us-east-1',
@@ -12,6 +14,10 @@ const service = {
         // here's a reference for how to update the column names once questions
         // are finalized:
         // https://stackoverflow.com/questions/37817879/how-to-rename-dynamodb-column-key
+
+        // added a wrapper to handle json data fields
+        const improvement = attr.wrap(params.improvement);
+        const k7 = attr.wrap(params.koru7);
         dynamoParams = {
             Item: {
                 "grades": {
@@ -30,13 +36,13 @@ const service = {
                     S: params.involvement
                 },
                 "improvement": {
-                    SS: params.improvement
+                    M: improvement
                 },
                 "missing_goals": {
                     S: params.missing_goals
                 },
                 "koru7": {
-                    SS: params.koru7
+                    M: k7
                 },
                 "prior_industry": {
                     S: params.prior_industry
